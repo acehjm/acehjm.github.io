@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="Mybatis架构图：  基础支持模块 解析器模块  XML解析：DOM（Document Object Model）、SAX（Simple API for XML）、StAX（Streaming API for XML） DOM：基于树形结构的XML解析方式，它会将整个XML文档读入内存并构建一个DOM树，基于该树对各个节点（Node）进行操作。 SAX：基于事件模型的XML解析方式，它将XML">
+<meta name="keywords" content="技术,mybatis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mybatis知识点梳理">
+<meta property="og:url" content="https://acehjm.github.io/2018/12/12/Mybatis知识点梳理/index.html">
+<meta property="og:site_name" content="majhdkl&#39;s blog">
+<meta property="og:description" content="Mybatis架构图：  基础支持模块 解析器模块  XML解析：DOM（Document Object Model）、SAX（Simple API for XML）、StAX（Streaming API for XML） DOM：基于树形结构的XML解析方式，它会将整个XML文档读入内存并构建一个DOM树，基于该树对各个节点（Node）进行操作。 SAX：基于事件模型的XML解析方式，它将XML">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2018/12/13/5c1133df0e950.png">
+<meta property="og:updated_time" content="2019-05-27T15:51:23.131Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mybatis知识点梳理">
+<meta name="twitter:description" content="Mybatis架构图：  基础支持模块 解析器模块  XML解析：DOM（Document Object Model）、SAX（Simple API for XML）、StAX（Streaming API for XML） DOM：基于树形结构的XML解析方式，它会将整个XML文档读入内存并构建一个DOM树，基于该树对各个节点（Node）进行操作。 SAX：基于事件模型的XML解析方式，它将XML">
+<meta name="twitter:image" content="https://i.loli.net/2018/12/13/5c1133df0e950.png">
+  <link rel="canonical" href="https://acehjm.github.io/2018/12/12/Mybatis知识点梳理/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Mybatis知识点梳理 | majhdkl's blog</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-72749534-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-72749534-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-left">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">majhdkl's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://acehjm.github.io/2018/12/12/Mybatis知识点梳理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="majhdkl">
+      <meta itemprop="description" content="Programming technology podcast">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="majhdkl's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Mybatis知识点梳理
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-12-12 23:44:47" itemprop="dateCreated datePublished" datetime="2018-12-12T23:44:47+08:00">2018-12-12</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-05-27 23:51:23" itemprop="dateModified" datetime="2019-05-27T23:51:23+08:00">2019-05-27</time>
+              </span>
+            
+          
+
+          
+            <span id="/2018/12/12/Mybatis知识点梳理/" class="post-meta-item leancloud_visitors" data-flag-title="Mybatis知识点梳理" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/12/12/Mybatis知识点梳理/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2018/12/12/Mybatis知识点梳理/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Mybatis架构图：</p>
+<p><img src="https://i.loli.net/2018/12/13/5c1133df0e950.png" alt="Mybatis架构图"></p>
+<h4 id="基础支持模块"><a href="#基础支持模块" class="headerlink" title="基础支持模块"></a>基础支持模块</h4><ol>
+<li><p><em>解析器模块</em></p>
+<ul>
+<li>XML解析：DOM（Document Object Model）、SAX（Simple API for XML）、StAX（Streaming API for XML）</li>
+<li>DOM：基于树形结构的XML解析方式，它会将整个XML文档读入内存并构建一个DOM树，基于该树对各个节点（Node）进行操作。</li>
+<li>SAX：基于事件模型的XML解析方式，它将XML文档的一部分加载到内存中，即可开始解析，在处理过程中并不会在内存中记录XML中的数据，所以占用资源比较少。当程序处理过程中满足条件时，也可以立即停止解析过程。SAX没有写XML文档的能力，是一种推模式。</li>
+<li>StAX：JDK提供，可以很好支持DOM和SAX解析方式，与SAX类似，也是把XML文档作为一个事件流进行处理，不同之处在于StAX使用的是拉模式（即应用程序通过调用解析器推进解析的进程）。</li>
+<li>XPath：一种为查询XML文档设计的语言，它使用路径表达式选取XML文档中的节点或节点集合，常结合DOM解析方式一起使用。</li>
+</ul>
+<blockquote>
+<p>MyBatis 中使用了DOM加XPath的解析方式。</p>
+</blockquote>
+</li>
+<li><p><em>反射工具箱</em></p>
+<ul>
+<li>Reflector：是Mybatis中反射模块的基础，每一个Reflector对象都代表对应的一个类，在Reflector中缓存了反射操作需要使用的类的元信息。</li>
+<li>ReflectorFactory：该接口主要实现了对Reflector对象的创建和缓存，<code>isClassCacheEnbale()</code>是检测该ReflectoryFactory对象是否会缓存Reflector对象，<code>setClassCacheEnabled(boolean classCacheEnabled)</code>设值是否缓存Reflector对象，<code>findForClass(Class&lt;?&gt; type)</code>创建指定Class对应的Reflector对象。使用ConcurrentMap集合实现对Reflector对象的缓存。</li>
+<li>TypeParameterResolver：静态解析类，提供一系列方法解析指定类中的字段、方法返回值或方法参数的类型。<code>resolveFieldType()</code>解析字段类型，<code>resolveReturnType()</code>解析返回值类型，<code>resolveParamType()</code>解析方法参数列表中各个参数类型。</li>
+<li>ObjectFactory：通过重载的多个<code>create()</code>方法创建指定类型的对象，是一个反射工厂，其<code>create()</code>方法通过调用<code>instantiateClass()</code>方法实现。</li>
+<li>Property工具集：PropertyTokenizer、PropertyNamer、PropertyCopier，<code>orders[0].name</code>这种由<code>.</code>和<code>[]</code>组成的表达式由PropertyTokenizer解析，方法名到属性名的转换以及多种检测操作由PropertyNamer解析，相同类型的两个对象之间的属性值拷贝由PropertyCopier解析，其核心方法是<code>copyBeanProperties()</code>。</li>
+<li>MetaClass：通过Reflector和PropertyTokenizer组合使用，实现对复杂的属性表达式的解析，并实现了获取指定属性描述信息的功能。MetaClass中比较重要的方法是<code>findProperty()</code>方法，它是通过调用<code>MetaClass.buildProperty()</code>方法实现的，而<code>build Property()</code>方法会通过PropertyTokenizer解析复杂的属性表达式。</li>
+<li>ObjectWrapper：是Mybatis对类级别元信息的封装和处理，该接口是对对象的包装，抽象了对象的属性信息，它定义了一系列查询和更新对象属性信息的方法。</li>
+<li>MetaObject：是对属性表达式的解析，MetaObject的构造方法会根据传入的原始对象的类型以及ObjectFactory工厂的实现，创建相应的ObjectWrapper对象。</li>
+</ul>
+</li>
+<li><p><em>类型转换</em></p>
+<ul>
+<li>TypeHandler：所有类型转换器都继承了TypeHandler接口，TypeHandler接口中有四个方法，分为两类，<code>setParameter()</code>方法负责将数据由JdbcType转换成JavaType，<code>getResult()</code>方法及其重载方法负责将数据由JavaType转换成JdbcType。</li>
+<li>TypeHandlerRegistry：在Mybatis初始化过程中，会为所有已知的TypeHandler创建对象，并实现注册到TypeHanlderRegistry中，由TypeHandlerRegistry负责管理这些TypeHandler。</li>
+<li>TypeAliasRegistry：通过该类完成别名的注册和管理工作，它通过<code>TYPE_ALIASES</code>字段（<code>Map&lt;String, Class&lt;?&gt;&gt;</code>类型）管理别名与JavaType之间的对应关系，通过<code>TypeAliasRegistry.registerAlias()</code>方法完成注册别名。</li>
+</ul>
+</li>
+<li><p><em>日志模块</em></p>
+<ul>
+<li>日志模块使用适配器模式，定义了一套统一的日志接口供上层使用。</li>
+<li>提供了<code>trace</code> 、<code>debug</code>、<code>warn</code>、<code>error</code>四个级别的日志。</li>
+<li>通过JDK动态代理的方式，将JDBC操作通过日志框架打印出来，一般在开发阶段使用。</li>
+</ul>
+</li>
+<li><p><em>资源加载</em></p>
+<ul>
+<li>类加载器：JVM中类加载器（ClassLoader）负责加载来自文件系统、网络或其他来源的类文件，JVM中类加载器默认使用双亲委派模式（双亲委派模式可以保证：一、子加载器可以使用父加载器已加载的类，而父类加载器无法使用子加载器已加载的类；二、父加载器已加载过的类无法被子加载器再次加载。），即子加载器委托父加载器加载。</li>
+<li>ClassLoaderWrapper：是ClassLoader的包装器，其中包含了多个ClassLoader对象，通过调整多个类加载器的使用顺序，ClassLoaderWrapper可以确保返回给系统使用的是正确的类加载器。</li>
+<li>ResolverUtil：可以根据指定条件查找指定包下的类，ResolverUtil中使用classLoader字段记录当前现场上下文绑定的ClassLoader，可以修改使用类加载。</li>
+<li>虚拟文件系统（VFS）：VFS是一个抽象类，用来查找指定路径下的资源。</li>
+</ul>
+</li>
+<li><p><em>数据源模块</em></p>
+<ul>
+<li><p>DataSourceFactory：有UnpooledDataSourceFactory和PooledDataSourceFactory类。</p>
+</li>
+<li><p>UnpooledDataSource：未池化，频繁使用会耗资源。</p>
+</li>
+<li><p>PooledDataSource：实现数据库连接的重用、提高响应速度、防止数据库连接过多造成数据库假死、避免数据库连接泄漏等。数据库连接池会控制连接总数的上限以及空闲连接的上限，如果连接池创建的总连接数已达上限，且已都被占用，则后续请求连接的线程会进入阻塞队列等待，知道有线程释放出可用的连接。如果连接池中空闲连接数较多，达到其上限，则后续返回的空闲连接不会放入池中，而是直接关闭，可以减少系统维护多余数据库连接的开销。</p>
+<blockquote>
+<p>在配置时，空闲连接上限不能设置过大（浪费系统资源来维护空闲连接），也不能设置过小（出现瞬间峰值请求时，系统响应能力较弱），需根据性能测试、权衡以及一些经验配置。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p><em>事物管理模块</em></p>
+<ul>
+<li>对数据库事务进行了抽象。</li>
+<li>五个接口：<code>getConnection()</code>获取对应的数据库连接，<code>commit()</code>提交事物，<code>rollback()</code>回滚事物，<code>close()</code>关闭数据库连接，<code>getTimeOut()</code>获取事物超时时间。</li>
+</ul>
+</li>
+<li><p><em>绑定模块</em></p>
+<ul>
+<li>Mapper接口类中方法和XML文件中key的映射处理操作。</li>
+<li>MapperRegistry：是Mapper接口及其对应的代理对象工厂的注册中心。</li>
+<li>MapperProxyFactory：主要负责创建代理对象。</li>
+<li>MapperProxy：实现了InvocationHandler接口。</li>
+<li>MapperMethod：封装了Mapper接口中对应的方法的信息，以及对应SQL语句的信息。</li>
+</ul>
+</li>
+<li><p><em>缓存模块</em></p>
+<ul>
+<li>分为两层结构：一级缓存和二级缓存，本质上一样，都是Cache接口的实现。</li>
+<li>Cache：定义了所有缓存的基本行为。</li>
+<li>CacheKey：可以添加多个对象，由这些对象共同确定两个CacheKey对象是否相同，CacheKey重写了<code>equals()</code>方法和<code>hashCode()</code>方法。</li>
+</ul>
+</li>
+</ol>
+<h4 id="核心处理模块"><a href="#核心处理模块" class="headerlink" title="核心处理模块"></a>核心处理模块</h4><blockquote>
+<p>Mybatis初始化的主要工作是加载并解析mybatis-config.xml配置文件、映射配置文件以及相关的注解信息。</p>
+</blockquote>
+<ul>
+<li>Mybatis的初始化入口是<code>SqlSessionFactoryBuilder.build()</code>。首先是读取配置文件，然后解析文件得到Configuration对象，创建DefaultSqlSessionFactory对象。</li>
+<li>Configuration是Mybatis初始化过程中的核心对象，几乎全部配置信息都会保存到Configuration对象中，它是在Mybatis初始化过程中创建且是全局唯一。</li>
+<li>XMLConfigBuilder是BaseBuilder子类之一，主要负责解析mybatis-config.xml配置文件，它的<code>parse()</code>方法是解析配置文件的入口。</li>
+<li>XMLMapperBuilder负责解析映射配置文件，也是继承BaseBuilder抽象类，<code>parse()</code>方法是解析配置文件的入口。</li>
+<li>XMLStatementBuilder用来解析SQL节点，Mybatis使用SqlSource接口表示映射文件或注解中定义的SQL语句，但它表示的SQL语句不能直接被数据库执行，因为其中可能含有动态SQL语句相关的节点或是占位符等需要解析的元素。</li>
+<li>SqlNode用来解析SQL语句中定义的动态SQL节点、文本节点等。</li>
+<li>SqlSource接口中<code>getBoundSql(Object parameterObject)</code>方法通过解析得到BoundSql对象，其中封装了包含<code>&quot;?&quot;</code>占位符的SQL语句，以及绑定的实参。</li>
+<li>DynamicContext主要用来记录解析动态SQL语句之后产生的SQL语句片段，可以认为它是一个用于记录动态SQL语句解析结果的容器。</li>
+<li>SqlSourceBuilder主要完成两方面的操作，一方面是解析SQL语句中的<code>#{}</code>占位符中定义的属性，格式类似于<code>#{_frc-item_0,javaType=int,jdbcType=NUERIC,typeHandler=MyTypeHandler}</code>，另一方面是将SQL语句中的<code>#{}</code>占位符替换成<code>?</code>占位符。</li>
+<li>DynamicSqlSource负责解析动态SQL语句，也是最常用的SqlSource实现之一。</li>
+<li>RowSqlSource是SqlSource的另一个实现，其逻辑与DynamicSqlSource类似，但是执行的时机不一样，处理的SQL语句类型也不一样。RowSqlSource在构造方法中首先会调用<code>getSql()</code>方法，其中通过调用<code>SqlNode.apply()</code>方法完成SQL语句的拼接和初步处理，之后会使用<code>SqlSourcebuilder</code>完成占位符的替换和ParameterMapping集合的创建，并返回StaticSqlSource对象。</li>
+<li>ResultSetHandler负责映射select语句查询得到的结果集，同时还会处理存储过程执行后的输出参数。</li>
+<li>KeyGenerator接口提供业务逻辑需要获取插入记录时产生的自增主键。</li>
+<li>StatementHandler是Mybatis的核心接口之一，它的接口功能有创建Statement对象，为SQL语句绑定实参，执行select|insert|update|delete等多种类型的SQL语句，批量执行SQL语句，将结果集映射成结果对象等。</li>
+<li>Executor是Mybatis核心接口之一，其中定义了数据库操作的基本方法。在实际应用中经常涉及的SqlSession接口的功能，都是基于Executor接口实现的。</li>
+</ul>
+<h4 id="接口模块"><a href="#接口模块" class="headerlink" title="接口模块"></a>接口模块</h4><ul>
+<li>SqlSession中定义了常用数据库操作方法，如增删改查等。</li>
+</ul>
+<h4 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h4><blockquote>
+<p>Mybatis中，插件通过拦截器的方式实现，可以自定义很多强大的功能，如主键生成、黑白名单、分页、分库、分表等。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/技术/" rel="tag"># 技术</a>
+            
+              <a href="/tags/mybatis/" rel="tag"># mybatis</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2018/12/12/技术概念记录/" rel="next" title="一些技术类相关概念的整理">
+                  <i class="fa fa-chevron-left"></i> 一些技术类相关概念的整理
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2018/12/15/Java-性能调优（一）/" rel="prev" title="Java 性能调优（一）">
+                  Java 性能调优（一） <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="comments"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.png"
+      alt="majhdkl">
+  <p class="site-author-name" itemprop="name">majhdkl</p>
+  <div class="site-description motion-element" itemprop="description">Programming technology podcast</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/yourname" title="GitHub &rarr; https://github.com/yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:yourname@gmail.com" title="E-Mail &rarr; mailto:yourname@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/yourname" title="Weibo &rarr; https://weibo.com/yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/yourname" title="Twitter &rarr; https://twitter.com/yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/yourname" title="StackOverflow &rarr; https://stackoverflow.com/yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+      </span>
+    
+  </div>
+
+
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基础支持模块"><span class="nav-number">1.</span> <span class="nav-text">基础支持模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#核心处理模块"><span class="nav-number">2.</span> <span class="nav-text">核心处理模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口模块"><span class="nav-number">3.</span> <span class="nav-text">接口模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插件"><span class="nav-number">4.</span> <span class="nav-text">插件</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">majhdkl</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        <span>0%</span>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'm0viCei7XYG275ztkJqkQfnz-MdYXbMMI',
+    appKey: 'y8H45RL07PsMfxg0qDQHIB5w',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

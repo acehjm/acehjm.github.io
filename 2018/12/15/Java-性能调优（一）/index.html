@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="造成系统瓶颈计算资源的因素有很多，包括CPU资源的调度、内存的读写、磁盘IO、网络IO、数据库、竞争锁、异常等。而系统性能的衡量指标有响应时间、启动时间、执行时间、执行速度、磁盘吞吐量、网络吞吐量、负载承受能力等。那么，从软件的角度看，性能优化的目标有，编写更高效的代码、使用更高效的算法、减少竞争锁、分布式集群、微服务等。而性能的优化策略有，用空间换时间、用时间换空间、优化代码、并行处理等。系统">
+<meta name="keywords" content="java,性能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 性能调优（一）">
+<meta property="og:url" content="https://acehjm.github.io/2018/12/15/Java-性能调优（一）/index.html">
+<meta property="og:site_name" content="majhdkl&#39;s blog">
+<meta property="og:description" content="造成系统瓶颈计算资源的因素有很多，包括CPU资源的调度、内存的读写、磁盘IO、网络IO、数据库、竞争锁、异常等。而系统性能的衡量指标有响应时间、启动时间、执行时间、执行速度、磁盘吞吐量、网络吞吐量、负载承受能力等。那么，从软件的角度看，性能优化的目标有，编写更高效的代码、使用更高效的算法、减少竞争锁、分布式集群、微服务等。而性能的优化策略有，用空间换时间、用时间换空间、优化代码、并行处理等。系统">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-05-27T15:51:11.095Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 性能调优（一）">
+<meta name="twitter:description" content="造成系统瓶颈计算资源的因素有很多，包括CPU资源的调度、内存的读写、磁盘IO、网络IO、数据库、竞争锁、异常等。而系统性能的衡量指标有响应时间、启动时间、执行时间、执行速度、磁盘吞吐量、网络吞吐量、负载承受能力等。那么，从软件的角度看，性能优化的目标有，编写更高效的代码、使用更高效的算法、减少竞争锁、分布式集群、微服务等。而性能的优化策略有，用空间换时间、用时间换空间、优化代码、并行处理等。系统">
+  <link rel="canonical" href="https://acehjm.github.io/2018/12/15/Java-性能调优（一）/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Java 性能调优（一） | majhdkl's blog</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-72749534-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-72749534-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-left">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">majhdkl's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup">
+  <div class="search-header">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <div class="search-input-wrapper">
+      <input autocomplete="off" autocorrect="off" autocapitalize="none"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="search-input">
+    </div>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+  <div id="search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://acehjm.github.io/2018/12/15/Java-性能调优（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="majhdkl">
+      <meta itemprop="description" content="Programming technology podcast">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="majhdkl's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Java 性能调优（一）
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2018-12-15 08:49:56" itemprop="dateCreated datePublished" datetime="2018-12-15T08:49:56+08:00">2018-12-15</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-05-27 23:51:11" itemprop="dateModified" datetime="2019-05-27T23:51:11+08:00">2019-05-27</time>
+              </span>
+            
+          
+
+          
+            <span id="/2018/12/15/Java-性能调优（一）/" class="post-meta-item leancloud_visitors" data-flag-title="Java 性能调优（一）" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/12/15/Java-性能调优（一）/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2018/12/15/Java-性能调优（一）/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <!-- 标签 方式，要求版本在0.4.5或以上 -->
+<p>造成系统瓶颈计算资源的因素有很多，包括CPU资源的调度、内存的读写、磁盘IO、网络IO、数据库、竞争锁、异常等。而系统性能的衡量指标有响应时间、启动时间、执行时间、执行速度、磁盘吞吐量、网络吞吐量、负载承受能力等。那么，从软件的角度看，性能优化的目标有，编写更高效的代码、使用更高效的算法、减少竞争锁、分布式集群、微服务等。而性能的优化策略有，用空间换时间、用时间换空间、优化代码、并行处理等。系统的优化来自三个方面，基础技术、层次方面、架构方面。</p>
+<a id="more"></a>
+
+<h4 id="Java-API调用优化建议"><a href="#Java-API调用优化建议" class="headerlink" title="Java API调用优化建议"></a>Java API调用优化建议</h4><h5 id="面向对象及基础类型"><a href="#面向对象及基础类型" class="headerlink" title="面向对象及基础类型"></a>面向对象及基础类型</h5><ol>
+<li><p><strong><em>采用<code>clone()</code>方式创建对象</em></strong>：<code>clone()</code>是Object类中的方法，使用时需实现Cloneable接口。当我们使用<code>new</code>关键字创建实例的时候，构造函数中所有构造参数都会被自动调用，而<code>clone()</code>不会调用任何构造函数，避免参数的初始化，在保留原有信息的基础上，创建速度更快。</p>
+<blockquote>
+<ul>
+<li>拷贝对象返回的是一个新对象，而不是原来对象的引用地址。</li>
+<li>拷贝对象与<code>new</code>关键字操作符返回的新对象的区别是，这个拷贝已经包含了一些原来对象的信息，而不是对象的初始化信息。</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong><em>避免对boolean的判断</em></strong>：boolean被定义为存储8位（1字节）数值的形式，但只能是true或者false。在使用boolean时，避免使用等于判断，准确的说是不要使用<code>3=3 == true</code>这种形式的判断。</p>
+</li>
+<li><p><strong><em>多用条件操作符</em></strong>：大部分时候，我们在代码中比较多用<code>if(...) return; else return;</code>这种形式的判断，但是条件使用太多，对代码的可读性带来影响，因此一些条件语句可以替换为诸如<code>return isdone?0:1</code>这种形式。</p>
+</li>
+<li><p><strong><em>静态（static）方法代替实例方法</em></strong>：为了方便的实现多态的支持，实例方法需要维护一张类似虚拟函数导向表的结构，因此，在调用实例方法时会消耗更多的系统资源，使用类加载时就会初始化的静态方法会更快一些。静态方法和实例方法的两点区别：</p>
+<blockquote>
+<ul>
+<li>在外部调用静态方法时，可以使用“类名.方法名”或“对象名.方法名”的方式，而实例方法只能通过后者调用，即静态方法无需创建对象。</li>
+<li>静态方法在访问本类成员时，只允许访问静态成员，而不允许访问实例成员变量和实例方法，，实例方法则无此限制。</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong><em>有条件的使用final关键字</em></strong>：final关键字可以修饰类、变量、方法，在使用匿名内部类的时候，经常会用到final关键字，如String类。使用final可以锁定方法，以防止任何继承类修改它的含义，在早期的Java版本中，会将final方法转为内嵌调用，JDK6之后无需此优化。</p>
+</li>
+<li><p><strong><em>避免不需要的instanceof操作</em></strong>：instanceof关键字是Java的一个二元操作符，和“==”“&gt;”类似，使用instanceof比较左边的对象是否是右边类的实例，会返回true或false。合理利用多态特性，可以避免instanceof的使用。</p>
+</li>
+<li><p><strong><em>避免子类中存在父类转换</em></strong>：Java中，所有子类隐含的“等于”父类，因此在子类中无需再转换。</p>
+</li>
+<li><p><strong><em>多使用局部变量</em></strong>：调用方法时传递的参数在调用中创建的临时变量都被保存在栈（Stack）里面，因此读写速度更快。像静态变量、实例变量，它们在堆（Heap）中被创建，保留在堆中，读写速度较慢。</p>
+<blockquote>
+<ul>
+<li>实例对象属于对象的属性，使用时必须创建对象，其实例对象才会被分配空间，才能使用它。静态变量属于类，只要程序加载了类的字节码，不用创建任何实例对象，就会被分配空间。</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong><em>使用效率最高的位运算</em></strong>：位运算表达式由操作数和位运算符组成，实现对整数类型的二进制数位运算。位运算符可以分为逻辑运算符（包括<code>～</code>、<code>&amp;</code>、<code>|</code>、<code>^</code>）及移位运算符（包括<code>&gt;&gt;</code>、<code>&gt;&gt;&gt;</code>、<code>&lt;&lt;</code>）。</p>
+<blockquote>
+<ul>
+<li><code>&gt;&gt;&gt;</code>和 <code>&gt;&gt;</code>的区别是，在执行运算时，<code>&gt;&gt;&gt;</code>运算符的操作数高位补0，而<code>&gt;&gt;</code>运算符的操作数高位移入原来的高位的值。</li>
+<li>右移以为相当于除以2，左移一位相当于乘以2（位运算速度高于乘除运算）。</li>
+<li>若进行位逻辑运算的两个操作数的长度不同，则返回值以数据长度较长的数据类型为准。</li>
+<li>按位异或可以不使用临时变量完成两个值的交换，也可以使某个整型数的特定位的翻转。</li>
+<li>按位与运算可以用来屏蔽特定的位，也可以用来取某个整型数中特定的位。</li>
+<li>按位或运算可以用来对某个整型数的特定位置的值置1.</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong><em>用一维数组代替二维数组</em></strong>：数组的优点是随机访问性能好。二维数组的访问速度要优于一位数组，但是，二维数组占用空间是一维数组的10倍左右。在性能敏感的系统中使用二维数组，如果内存不足，尽量将二维数组替换为一维数组再处理。（二维数组是典型的空间换时间做法）</p>
+</li>
+<li><p><strong><em>布尔运算代替位运算</em></strong>：使用位运算代替布尔运算会使系统多很多无效计算，比如<code>a&amp;&amp;b&amp;&amp;c</code>，当有一个为false时，会跳过后面的计算直接返回结果，但是位运算需要将所有的表达式都计算完才返回结果。</p>
+</li>
+<li><p><strong><em>提取表达式优化</em></strong>：将方法中或代码块中的相同的表达式提取出来，避免重复计算，如<code>a*b*c+d</code>，没次计算都会消耗资源，提取出来只计算一次即可。</p>
+</li>
+<li><p><strong><em>不要总是使用取反操作符（!）</em></strong>：<code>!</code>取反操作符表示异或操作，使用起来方便，但是它会降低程序的可读性。</p>
+</li>
+<li><p><strong><em>不要重复初始化变量</em></strong>：默认情况下，调用类的构造函数时，Java会把变量初始化为一个确定的值，例如将所有对象设置为<code>null</code>，因此，一般情况下，通过构造函数初始化对象。</p>
+</li>
+<li><p><strong><em>在switch语句中使用字符串</em></strong>：在switch或case表达式中，值不能为<code>null</code>，否则会抛空指针异常。在编译时，将字符串<code>hashcode()</code>之后，转为与整数类型兼容的格式。</p>
+</li>
+<li><p><strong><em>数字字面常量的改进</em></strong>：可以将十进制、十六进制转为二进制表示，比如数字<code>9</code>用二进制表示为<code>0b001001</code>。当一个数字太长的时候，使用<code>_</code>分隔符分开，比如<code>5000000</code>可以改成<code>5_000_000</code>。</p>
+</li>
+<li><p><strong><em>优化变长参数方法的调用</em></strong>：一般情况下，方法的参数不宜过多，且最后一个参数为变长参数时，避免和泛型类型一起使用。</p>
+</li>
+<li><p><strong><em>基本数据类型-空变量</em></strong>：通过显式的赋空变量，Eden（新生代的一个区域）就能在新对象创建之前获得自由空间，这样垃圾收集就会更快。</p>
+</li>
+</ol>
+<h4 id="集合处理优化方案"><a href="#集合处理优化方案" class="headerlink" title="集合处理优化方案"></a>集合处理优化方案</h4><ol start="19">
+<li><strong><em>集合中删除元素</em></strong>：<code>List list = new ArrayList&lt;~&gt;()</code>中，不能直接使用<code>remove()</code>方法删除元素，会发生错误，应该使用<code>Iterator</code>中的删除方法。</li>
+<li><strong><em>集合内部避免返回null</em></strong>：在需要返回数组或集合的方法中，如果需要返回空数据，返回大小为0的数组或集合，避免返回null（在调用方不判空情况下，返回null可能会发生NPE）。</li>
+<li><strong><em>使用迭代、流、并行流</em></strong>：JDK8及以上提供，可读性更好，不易出错，容易并行化。比如：<code>forEach()</code>是线程安全的。可以对其进行并行处理，<code>stream</code>替换为<code>parallelStream</code>（对性能造成严重影响）就可以执行过滤和统计操作。</li>
+</ol>
+<h4 id="字符串优化方案"><a href="#字符串优化方案" class="headerlink" title="字符串优化方案"></a>字符串优化方案</h4><ol start="22">
+<li><strong><em>善用subString()方法</em></strong>：<code>String.subString()</code>可以截取字符串，该方法适用于字符串长度较短时，当字符串长度很大时，会占用很大的内存，造成内存溢出，可以使用<code>new String(smallStr.toCharArray())</code>替代。因此，当需要截取的字符串长度总和远小于原始字符串文本长度时，使用<code>new String(smallStr.toCharArray())</code>，在大文本字符串处理中有很大优势。当需要截取的字符串长度总和大于原始文本字符串长度时，使用<code>String.subString()</code>可以达到共享内存的目的。</li>
+<li><strong><em>查找单个字符，用chart()代替startsWith()和endsWith()</em></strong>：从性能角度来说，前者会快一些。</li>
+<li><strong><em>字符串相加时，仅一个字符，使用’’替代””</em></strong>：使用字符替代。</li>
+<li><strong><em>字符串切割</em></strong>：使用<code>split()</code>方式切分字符串时性能较差。对比发现，使用<code>StringTokenizer</code>解析字符串更快。<code>StringTokenizer</code>类允许一个应用程序进入一个令牌（Token），<code>StringTokenizer</code>类的对象在内部已经标示化的字符串中维持了当前位置。一些操作使得现有位置上的字符串提前得到处理，一个令牌的值是由获得其曾经创建<code>StringTokenizer</code>类对象的字符串返回的。</li>
+<li><strong><em>字符串连接</em></strong>：字符串连接的方式一般有string对象连接、concat方法、StringBuilder类。而StringBuffer对所有方法都做了同步处理，效率较低，但是在多线程环境下，StringBuilder不是线程安全，无法使用。StringBuilder和StringBuffer两者底层实现都是<code>char[]</code>。对比，性能依次为<code>StringBuilder &gt; concat &gt; string+&#39;a&#39;</code>。</li>
+<li><strong><em>正则表达式</em></strong>：正则表达式不是万能的，根据实际情况使用。</li>
+</ol>
+<h4 id="其它优化"><a href="#其它优化" class="headerlink" title="其它优化"></a>其它优化</h4><ol start="28">
+<li><strong><em>循环优化</em></strong>：应尽可能减少循环。</li>
+<li><strong><em>使用arrayCopy()</em></strong>：数组复制是一个使用频率很高的功能，<code>System.arrayCopy()</code>函数是native函数，通常native函数性能优于普通函数，ArrayList中大量使用该函数。arrayCopy的本质是让处理器利用一条指令处理一个数组中的多个记录，有点像汇编语言里面的串操作指令，只需要指定头指针，然后开始循环即可，即执行一次指令，指针就后移一个位置，操作多少次就循环多少次。</li>
+<li><strong><em>使用Buffer进行IO操作</em></strong>：多使用缓冲区。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/java/" rel="tag"># java</a>
+            
+              <a href="/tags/性能/" rel="tag"># 性能</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2018/12/12/Mybatis知识点梳理/" rel="next" title="Mybatis知识点梳理">
+                  <i class="fa fa-chevron-left"></i> Mybatis知识点梳理
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/01/20/Redis之数据类型/" rel="prev" title="Redis数据类型">
+                  Redis数据类型 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="comments"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.png"
+      alt="majhdkl">
+  <p class="site-author-name" itemprop="name">majhdkl</p>
+  <div class="site-description motion-element" itemprop="description">Programming technology podcast</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/yourname" title="GitHub &rarr; https://github.com/yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:yourname@gmail.com" title="E-Mail &rarr; mailto:yourname@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/yourname" title="Weibo &rarr; https://weibo.com/yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/yourname" title="Twitter &rarr; https://twitter.com/yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/yourname" title="StackOverflow &rarr; https://stackoverflow.com/yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+      </span>
+    
+  </div>
+
+
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-API调用优化建议"><span class="nav-number">1.</span> <span class="nav-text">Java API调用优化建议</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#面向对象及基础类型"><span class="nav-number">1.1.</span> <span class="nav-text">面向对象及基础类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集合处理优化方案"><span class="nav-number">2.</span> <span class="nav-text">集合处理优化方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串优化方案"><span class="nav-number">3.</span> <span class="nav-text">字符串优化方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其它优化"><span class="nav-number">4.</span> <span class="nav-text">其它优化</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">majhdkl</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        <span>0%</span>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script><script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'm0viCei7XYG275ztkJqkQfnz-MdYXbMMI',
+    appKey: 'y8H45RL07PsMfxg0qDQHIB5w',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>
