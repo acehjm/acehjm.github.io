@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://acehjm.github.io/"/>
-  <updated>2019-08-19T17:20:57.293Z</updated>
+  <updated>2019-08-19T17:19:33.693Z</updated>
   <id>https://acehjm.github.io/</id>
   
   <author>
@@ -15,20 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>测试评论</title>
-    <link href="https://acehjm.github.io/2019/08/20/%E6%B5%8B%E8%AF%95%E8%AF%84%E8%AE%BA/"/>
-    <id>https://acehjm.github.io/2019/08/20/测试评论/</id>
-    <published>2019-08-19T17:20:57.000Z</published>
-    <updated>2019-08-19T17:20:57.293Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>Redis数据类型</title>
@@ -158,11 +144,11 @@
       <category term="技术" scheme="https://acehjm.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="kotlin" scheme="https://acehjm.github.io/tags/kotlin/"/>
-    
       <category term="技术" scheme="https://acehjm.github.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
       <category term="java" scheme="https://acehjm.github.io/tags/java/"/>
+    
+      <category term="kotlin" scheme="https://acehjm.github.io/tags/kotlin/"/>
     
   </entry>
   
