@@ -56,9 +56,9 @@
         <category>技术</category>
       </categories>
       <tags>
-        <tag>kotlin</tag>
-        <tag>java</tag>
         <tag>技术</tag>
+        <tag>java</tag>
+        <tag>kotlin</tag>
       </tags>
   </entry>
   <entry>
@@ -81,8 +81,8 @@
         <category>技术</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>技术</tag>
+        <tag>java</tag>
         <tag>spring</tag>
       </tags>
   </entry>
