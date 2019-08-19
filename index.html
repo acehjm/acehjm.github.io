@@ -304,9 +304,22 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-05-27 23:51:29" itemprop="dateModified" datetime="2019-05-27T23:51:29+08:00">2019-05-27</time>
+                <time title="修改时间：2019-08-19 21:06:41" itemprop="dateModified" datetime="2019-08-19T21:06:41+08:00">2019-08-19</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -426,9 +439,22 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-05-27 23:51:11" itemprop="dateModified" datetime="2019-05-27T23:51:11+08:00">2019-05-27</time>
+                <time title="修改时间：2019-08-19 20:54:47" itemprop="dateModified" datetime="2019-08-19T20:54:47+08:00">2019-08-19</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -540,9 +566,22 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-05-27 23:51:23" itemprop="dateModified" datetime="2019-05-27T23:51:23+08:00">2019-05-27</time>
+                <time title="修改时间：2019-08-19 21:24:59" itemprop="dateModified" datetime="2019-08-19T21:24:59+08:00">2019-08-19</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -580,116 +619,15 @@
       
           <p>Mybatis架构图：</p>
 <p><img src="https://i.loli.net/2018/12/13/5c1133df0e950.png" alt="Mybatis架构图"></p>
-<h4 id="基础支持模块"><a href="#基础支持模块" class="headerlink" title="基础支持模块"></a>基础支持模块</h4><ol>
-<li><p><em>解析器模块</em></p>
-<ul>
-<li>XML解析：DOM（Document Object Model）、SAX（Simple API for XML）、StAX（Streaming API for XML）</li>
-<li>DOM：基于树形结构的XML解析方式，它会将整个XML文档读入内存并构建一个DOM树，基于该树对各个节点（Node）进行操作。</li>
-<li>SAX：基于事件模型的XML解析方式，它将XML文档的一部分加载到内存中，即可开始解析，在处理过程中并不会在内存中记录XML中的数据，所以占用资源比较少。当程序处理过程中满足条件时，也可以立即停止解析过程。SAX没有写XML文档的能力，是一种推模式。</li>
-<li>StAX：JDK提供，可以很好支持DOM和SAX解析方式，与SAX类似，也是把XML文档作为一个事件流进行处理，不同之处在于StAX使用的是拉模式（即应用程序通过调用解析器推进解析的进程）。</li>
-<li>XPath：一种为查询XML文档设计的语言，它使用路径表达式选取XML文档中的节点或节点集合，常结合DOM解析方式一起使用。</li>
-</ul>
-<blockquote>
-<p>MyBatis 中使用了DOM加XPath的解析方式。</p>
-</blockquote>
-</li>
-<li><p><em>反射工具箱</em></p>
-<ul>
-<li>Reflector：是Mybatis中反射模块的基础，每一个Reflector对象都代表对应的一个类，在Reflector中缓存了反射操作需要使用的类的元信息。</li>
-<li>ReflectorFactory：该接口主要实现了对Reflector对象的创建和缓存，<code>isClassCacheEnbale()</code>是检测该ReflectoryFactory对象是否会缓存Reflector对象，<code>setClassCacheEnabled(boolean classCacheEnabled)</code>设值是否缓存Reflector对象，<code>findForClass(Class&lt;?&gt; type)</code>创建指定Class对应的Reflector对象。使用ConcurrentMap集合实现对Reflector对象的缓存。</li>
-<li>TypeParameterResolver：静态解析类，提供一系列方法解析指定类中的字段、方法返回值或方法参数的类型。<code>resolveFieldType()</code>解析字段类型，<code>resolveReturnType()</code>解析返回值类型，<code>resolveParamType()</code>解析方法参数列表中各个参数类型。</li>
-<li>ObjectFactory：通过重载的多个<code>create()</code>方法创建指定类型的对象，是一个反射工厂，其<code>create()</code>方法通过调用<code>instantiateClass()</code>方法实现。</li>
-<li>Property工具集：PropertyTokenizer、PropertyNamer、PropertyCopier，<code>orders[0].name</code>这种由<code>.</code>和<code>[]</code>组成的表达式由PropertyTokenizer解析，方法名到属性名的转换以及多种检测操作由PropertyNamer解析，相同类型的两个对象之间的属性值拷贝由PropertyCopier解析，其核心方法是<code>copyBeanProperties()</code>。</li>
-<li>MetaClass：通过Reflector和PropertyTokenizer组合使用，实现对复杂的属性表达式的解析，并实现了获取指定属性描述信息的功能。MetaClass中比较重要的方法是<code>findProperty()</code>方法，它是通过调用<code>MetaClass.buildProperty()</code>方法实现的，而<code>build Property()</code>方法会通过PropertyTokenizer解析复杂的属性表达式。</li>
-<li>ObjectWrapper：是Mybatis对类级别元信息的封装和处理，该接口是对对象的包装，抽象了对象的属性信息，它定义了一系列查询和更新对象属性信息的方法。</li>
-<li>MetaObject：是对属性表达式的解析，MetaObject的构造方法会根据传入的原始对象的类型以及ObjectFactory工厂的实现，创建相应的ObjectWrapper对象。</li>
-</ul>
-</li>
-<li><p><em>类型转换</em></p>
-<ul>
-<li>TypeHandler：所有类型转换器都继承了TypeHandler接口，TypeHandler接口中有四个方法，分为两类，<code>setParameter()</code>方法负责将数据由JdbcType转换成JavaType，<code>getResult()</code>方法及其重载方法负责将数据由JavaType转换成JdbcType。</li>
-<li>TypeHandlerRegistry：在Mybatis初始化过程中，会为所有已知的TypeHandler创建对象，并实现注册到TypeHanlderRegistry中，由TypeHandlerRegistry负责管理这些TypeHandler。</li>
-<li>TypeAliasRegistry：通过该类完成别名的注册和管理工作，它通过<code>TYPE_ALIASES</code>字段（<code>Map&lt;String, Class&lt;?&gt;&gt;</code>类型）管理别名与JavaType之间的对应关系，通过<code>TypeAliasRegistry.registerAlias()</code>方法完成注册别名。</li>
-</ul>
-</li>
-<li><p><em>日志模块</em></p>
-<ul>
-<li>日志模块使用适配器模式，定义了一套统一的日志接口供上层使用。</li>
-<li>提供了<code>trace</code> 、<code>debug</code>、<code>warn</code>、<code>error</code>四个级别的日志。</li>
-<li>通过JDK动态代理的方式，将JDBC操作通过日志框架打印出来，一般在开发阶段使用。</li>
-</ul>
-</li>
-<li><p><em>资源加载</em></p>
-<ul>
-<li>类加载器：JVM中类加载器（ClassLoader）负责加载来自文件系统、网络或其他来源的类文件，JVM中类加载器默认使用双亲委派模式（双亲委派模式可以保证：一、子加载器可以使用父加载器已加载的类，而父类加载器无法使用子加载器已加载的类；二、父加载器已加载过的类无法被子加载器再次加载。），即子加载器委托父加载器加载。</li>
-<li>ClassLoaderWrapper：是ClassLoader的包装器，其中包含了多个ClassLoader对象，通过调整多个类加载器的使用顺序，ClassLoaderWrapper可以确保返回给系统使用的是正确的类加载器。</li>
-<li>ResolverUtil：可以根据指定条件查找指定包下的类，ResolverUtil中使用classLoader字段记录当前现场上下文绑定的ClassLoader，可以修改使用类加载。</li>
-<li>虚拟文件系统（VFS）：VFS是一个抽象类，用来查找指定路径下的资源。</li>
-</ul>
-</li>
-<li><p><em>数据源模块</em></p>
-<ul>
-<li><p>DataSourceFactory：有UnpooledDataSourceFactory和PooledDataSourceFactory类。</p>
-</li>
-<li><p>UnpooledDataSource：未池化，频繁使用会耗资源。</p>
-</li>
-<li><p>PooledDataSource：实现数据库连接的重用、提高响应速度、防止数据库连接过多造成数据库假死、避免数据库连接泄漏等。数据库连接池会控制连接总数的上限以及空闲连接的上限，如果连接池创建的总连接数已达上限，且已都被占用，则后续请求连接的线程会进入阻塞队列等待，知道有线程释放出可用的连接。如果连接池中空闲连接数较多，达到其上限，则后续返回的空闲连接不会放入池中，而是直接关闭，可以减少系统维护多余数据库连接的开销。</p>
-<blockquote>
-<p>在配置时，空闲连接上限不能设置过大（浪费系统资源来维护空闲连接），也不能设置过小（出现瞬间峰值请求时，系统响应能力较弱），需根据性能测试、权衡以及一些经验配置。</p>
-</blockquote>
-</li>
-</ul>
-</li>
-<li><p><em>事物管理模块</em></p>
-<ul>
-<li>对数据库事务进行了抽象。</li>
-<li>五个接口：<code>getConnection()</code>获取对应的数据库连接，<code>commit()</code>提交事物，<code>rollback()</code>回滚事物，<code>close()</code>关闭数据库连接，<code>getTimeOut()</code>获取事物超时时间。</li>
-</ul>
-</li>
-<li><p><em>绑定模块</em></p>
-<ul>
-<li>Mapper接口类中方法和XML文件中key的映射处理操作。</li>
-<li>MapperRegistry：是Mapper接口及其对应的代理对象工厂的注册中心。</li>
-<li>MapperProxyFactory：主要负责创建代理对象。</li>
-<li>MapperProxy：实现了InvocationHandler接口。</li>
-<li>MapperMethod：封装了Mapper接口中对应的方法的信息，以及对应SQL语句的信息。</li>
-</ul>
-</li>
-<li><p><em>缓存模块</em></p>
-<ul>
-<li>分为两层结构：一级缓存和二级缓存，本质上一样，都是Cache接口的实现。</li>
-<li>Cache：定义了所有缓存的基本行为。</li>
-<li>CacheKey：可以添加多个对象，由这些对象共同确定两个CacheKey对象是否相同，CacheKey重写了<code>equals()</code>方法和<code>hashCode()</code>方法。</li>
-</ul>
-</li>
-</ol>
-<h4 id="核心处理模块"><a href="#核心处理模块" class="headerlink" title="核心处理模块"></a>核心处理模块</h4><blockquote>
-<p>Mybatis初始化的主要工作是加载并解析mybatis-config.xml配置文件、映射配置文件以及相关的注解信息。</p>
-</blockquote>
-<ul>
-<li>Mybatis的初始化入口是<code>SqlSessionFactoryBuilder.build()</code>。首先是读取配置文件，然后解析文件得到Configuration对象，创建DefaultSqlSessionFactory对象。</li>
-<li>Configuration是Mybatis初始化过程中的核心对象，几乎全部配置信息都会保存到Configuration对象中，它是在Mybatis初始化过程中创建且是全局唯一。</li>
-<li>XMLConfigBuilder是BaseBuilder子类之一，主要负责解析mybatis-config.xml配置文件，它的<code>parse()</code>方法是解析配置文件的入口。</li>
-<li>XMLMapperBuilder负责解析映射配置文件，也是继承BaseBuilder抽象类，<code>parse()</code>方法是解析配置文件的入口。</li>
-<li>XMLStatementBuilder用来解析SQL节点，Mybatis使用SqlSource接口表示映射文件或注解中定义的SQL语句，但它表示的SQL语句不能直接被数据库执行，因为其中可能含有动态SQL语句相关的节点或是占位符等需要解析的元素。</li>
-<li>SqlNode用来解析SQL语句中定义的动态SQL节点、文本节点等。</li>
-<li>SqlSource接口中<code>getBoundSql(Object parameterObject)</code>方法通过解析得到BoundSql对象，其中封装了包含<code>&quot;?&quot;</code>占位符的SQL语句，以及绑定的实参。</li>
-<li>DynamicContext主要用来记录解析动态SQL语句之后产生的SQL语句片段，可以认为它是一个用于记录动态SQL语句解析结果的容器。</li>
-<li>SqlSourceBuilder主要完成两方面的操作，一方面是解析SQL语句中的<code>#{}</code>占位符中定义的属性，格式类似于<code>#{_frc-item_0,javaType=int,jdbcType=NUERIC,typeHandler=MyTypeHandler}</code>，另一方面是将SQL语句中的<code>#{}</code>占位符替换成<code>?</code>占位符。</li>
-<li>DynamicSqlSource负责解析动态SQL语句，也是最常用的SqlSource实现之一。</li>
-<li>RowSqlSource是SqlSource的另一个实现，其逻辑与DynamicSqlSource类似，但是执行的时机不一样，处理的SQL语句类型也不一样。RowSqlSource在构造方法中首先会调用<code>getSql()</code>方法，其中通过调用<code>SqlNode.apply()</code>方法完成SQL语句的拼接和初步处理，之后会使用<code>SqlSourcebuilder</code>完成占位符的替换和ParameterMapping集合的创建，并返回StaticSqlSource对象。</li>
-<li>ResultSetHandler负责映射select语句查询得到的结果集，同时还会处理存储过程执行后的输出参数。</li>
-<li>KeyGenerator接口提供业务逻辑需要获取插入记录时产生的自增主键。</li>
-<li>StatementHandler是Mybatis的核心接口之一，它的接口功能有创建Statement对象，为SQL语句绑定实参，执行select|insert|update|delete等多种类型的SQL语句，批量执行SQL语句，将结果集映射成结果对象等。</li>
-<li>Executor是Mybatis核心接口之一，其中定义了数据库操作的基本方法。在实际应用中经常涉及的SqlSession接口的功能，都是基于Executor接口实现的。</li>
-</ul>
-<h4 id="接口模块"><a href="#接口模块" class="headerlink" title="接口模块"></a>接口模块</h4><ul>
-<li>SqlSession中定义了常用数据库操作方法，如增删改查等。</li>
-</ul>
-<h4 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h4><blockquote>
-<p>Mybatis中，插件通过拦截器的方式实现，可以自定义很多强大的功能，如主键生成、黑白名单、分页、分库、分表等。</p>
-</blockquote>
-
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/12/12/Mybatis知识点梳理/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
@@ -729,7 +667,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/2018/12/12/技术概念记录/" class="post-title-link" itemprop="url">一些技术类相关概念的整理</a>
+            <a href="/2018/12/12/技术概念记录/" class="post-title-link" itemprop="url">技术类相关概念整理</a>
           
         </h1>
 
@@ -755,13 +693,26 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-05-30 00:06:23" itemprop="dateModified" datetime="2019-05-30T00:06:23+08:00">2019-05-30</time>
+                <time title="修改时间：2019-08-19 20:52:47" itemprop="dateModified" datetime="2019-08-19T20:52:47+08:00">2019-08-19</time>
               </span>
             
           
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
 
           
-            <span id="/2018/12/12/技术概念记录/" class="post-meta-item leancloud_visitors" data-flag-title="一些技术类相关概念的整理" title="阅读次数">
+            <span id="/2018/12/12/技术概念记录/" class="post-meta-item leancloud_visitors" data-flag-title="技术类相关概念整理" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -794,15 +745,15 @@
 
       
           <p>技术名称/概念太多，一些很少用到但是要接触的概念还是要记录下来，写在这里的目的是，进来就能看到。 </p>
-<h4 id="多租户"><a href="#多租户" class="headerlink" title="多租户"></a>多租户</h4><p><strong>多租户技术</strong>（英语：<strong>multi-tenancy technology</strong>）或称<strong>多重租赁技术</strong>，是一种<a href="https://zh.wikipedia.org/wiki/%E8%BB%9F%E4%BB%B6%E6%9E%B6%E6%A7%8B" target="_blank" rel="noopener">软件架构</a>技术，它是在探讨与实现如何于多用户的环境下共享相同的系统或程序组件，并且仍可确保各用户间数据的隔离性。</p>
-<p>在多租户技术中，租户（tenant）是指使用系统或计算机运算资源的客户，但在多租户技术中，租户包含在系统中可识别为指定用户的一切数据，举凡账户与统计信息（accounting data），用户在系统中建置的各式数据，以及用户本身的客制化应用程序环境等，都属于租户的范围，而租户所使用的则是基于供应商所开发或建置的应用系统或运算资源等，供应商所设计的应用系统会容纳数个以上的用户在同一个环境下使用，为了要让多个用户的环境能力同一个应用程序与运算环境上使用，则应用程序与运算环境必须要特别设计，除了可以让系统平台可以允许同时让多份相同的应用程序运行外，保护租户数据的隐私与安全也是多租户技术的关键之一。</p>
-<p>技术上，多租户技术可以透过许多不同的方式来切割用户的应用程序环境或数据。</p>
-<ul>
-<li>数据面（data approach）：供应商可以利用切割<a href="https://zh.wikipedia.org/wiki/%E8%B3%87%E6%96%99%E5%BA%AB" target="_blank" rel="noopener">数据库</a>（database），切割<a href="https://zh.wikipedia.org/w/index.php?title=%E5%84%B2%E5%AD%98%E5%8D%80&action=edit&redlink=1" target="_blank" rel="noopener">存储区</a>（storage），切割<a href="https://zh.wikipedia.org/w/index.php?title=%E7%B5%90%E6%A7%8B%E6%8F%8F%E8%BF%B0&action=edit&redlink=1" target="_blank" rel="noopener">结构描述</a>（schema）或是<a href="https://zh.wikipedia.org/wiki/%E8%A1%A8%E6%A0%BC" target="_blank" rel="noopener">表格</a>（table）来隔离租户的数据，必要时会需要进行对称或非对称加密以保护敏感数据，但不同的隔离作法有不同的实现复杂度与风险。</li>
-<li>程序面（application approach）：供应商可以利用应用程序挂载（hosting）环境，于<a href="https://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B" target="_blank" rel="noopener">进程</a>（process）上切割不同租户的应用程序运行环境，在无法跨越进程通信的情况下，保护各租户的应用程序运行环境，但供应商的运算环境要够强。</li>
-<li>系统面（system approach）：供应商可以利用虚拟化技术，将实体运算单元切割成不同的虚拟机，各租户可以使用其中一至数台的虚拟机来作为应用程序与数据的保存环境，但对供应商的运算能力要更要求。</li>
-</ul>
-
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/12/12/技术概念记录/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
@@ -868,9 +819,22 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-05-30 00:43:00" itemprop="dateModified" datetime="2019-05-30T00:43:00+08:00">2019-05-30</time>
+                <time title="修改时间：2019-08-19 20:59:29" itemprop="dateModified" datetime="2019-08-19T20:59:29+08:00">2019-08-19</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -906,8 +870,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Make everything as simple as possible, but not simpler. </p>
-<p>​                                                                         —  Albert Einstein</p>
+          <blockquote><p>Make everything as simple as possible, but not simpler. </p>
+<footer><strong>Albert Einstein</strong></footer></blockquote>
+
 <p>在 Spring Boot 开发过程中，有时候需要自定义数据类型，而默认的 <code>HttpMessageConverter</code> 不能将自定义数据类型序列化为想要的数据，因此需要自定义序列化与反序列化。<code>Gson</code> 或 <code>Jackson</code> 实现</p>
           <!--noindex-->
           
@@ -983,9 +948,22 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-05-30 00:40:04" itemprop="dateModified" datetime="2019-05-30T00:40:04+08:00">2019-05-30</time>
+                <time title="修改时间：2019-08-19 21:00:09" itemprop="dateModified" datetime="2019-08-19T21:00:09+08:00">2019-08-19</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -1022,7 +1000,7 @@
 
       
           <p>kotlin data （对应Java实体类</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Entity</span><br><span class="line">@Table(name = <span class="string">"user"</span>)</span><br><span class="line">data <span class="class"><span class="keyword">class</span> <span class="title">User</span>(</span></span><br><span class="line"><span class="class">        @<span class="title">NotNull</span>(<span class="title">message</span> </span>= <span class="string">"用户名不能为空"</span>)</span><br><span class="line">        @Column(name = <span class="string">"user_name"</span>, nullable = <span class="literal">false</span>)</span><br><span class="line">        <span class="keyword">var</span> userName: <span class="built_in">String</span> = <span class="string">""</span>,</span><br><span class="line"></span><br><span class="line">        @NotNull(message = <span class="string">"用户ID不能为空"</span>)</span><br><span class="line">        @Column(name = <span class="string">"user_id"</span>, unique = <span class="literal">true</span>)</span><br><span class="line">        <span class="keyword">var</span> userId: <span class="built_in">String</span> = <span class="string">""</span>,</span><br><span class="line"></span><br><span class="line">        @Email(message = <span class="string">"无效的邮箱"</span>)</span><br><span class="line">        <span class="keyword">var</span> email: <span class="built_in">String</span> = <span class="string">""</span>,</span><br><span class="line"></span><br><span class="line">        @Column(nullable = <span class="literal">false</span>)</span><br><span class="line">        <span class="keyword">var</span> password: <span class="built_in">String</span> = <span class="string">""</span></span><br><span class="line"></span><br><span class="line">) : Serializable</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name = <span class="meta-string">"user"</span>)</span></span><br><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span>(</span><br><span class="line">        <span class="meta">@NotNull(message = <span class="meta-string">"用户名不能为空"</span>)</span></span><br><span class="line">        <span class="meta">@Column(name = <span class="meta-string">"user_name"</span>, nullable = false)</span></span><br><span class="line">        <span class="keyword">var</span> userName: String = <span class="string">""</span>,</span><br><span class="line"></span><br><span class="line">        <span class="meta">@NotNull(message = <span class="meta-string">"用户ID不能为空"</span>)</span></span><br><span class="line">        <span class="meta">@Column(name = <span class="meta-string">"user_id"</span>, unique = true)</span></span><br><span class="line">        <span class="keyword">var</span> userId: String = <span class="string">""</span>,</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Email(message = <span class="meta-string">"无效的邮箱"</span>)</span></span><br><span class="line">        <span class="keyword">var</span> email: String = <span class="string">""</span>,</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Column(nullable = false)</span></span><br><span class="line">        <span class="keyword">var</span> password: String = <span class="string">""</span></span><br><span class="line"></span><br><span class="line">) : Serializable</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1097,9 +1075,22 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-05-30 00:42:44" itemprop="dateModified" datetime="2019-05-30T00:42:44+08:00">2019-05-30</time>
+                <time title="修改时间：2019-08-19 21:06:00" itemprop="dateModified" datetime="2019-08-19T21:06:00+08:00">2019-08-19</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -1136,18 +1127,15 @@
 
       
           <p>Hibernate对一些基本类型的映射提供了很好的支持，但有时候我们需要映射自定义或更复杂的数据类型，比如一个List集合，可以通过基本类型映射实现，需要在数据库中新建一张表，这种方式增加了数据库开销；也可以将List集合中的数据拼接成字符串再存储，这种方式导致程序可读性不友好，同时增加代码的复杂度；Hibernate提供了DiscriminatorType和UserType接口，方便用户自定义需要映射的数据类型。这里以UserType为例实现。</p>
-<p>假设用户需要自定义一个类型，名称为<code>ctype</code>，它是16位字符的<code>char</code>数组，需要映射到数据库<code>VARCHAR</code>类型。</p>
-<p>首先自定义java类型<code>ctype</code>：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ctype</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// mtype 的长度</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> TYPE_LENGTH = <span class="number">16</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// mtype 实际上就是 char 数组</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">char</span>[] mtype = <span class="keyword">new</span> <span class="keyword">char</span>[TYPE_LENGTH];</span><br><span class="line"></span><br><span class="line">  	<span class="comment">// 默认构造函数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ctype</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mtype = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通过构造函数转换为ctype类型</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ctype</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">        String str = String.valueOf(object);</span><br><span class="line">        <span class="keyword">if</span> (StrUtil.isBlank(str))</span><br><span class="line">            <span class="keyword">this</span>.mtype = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">this</span>.mtype = str.toCharArray();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> String.valueOf(<span class="keyword">this</span>.mtype).replace(<span class="string">" "</span>, <span class="string">""</span>).length() &lt; TYPE_LENGTH;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> String.valueOf(<span class="keyword">this</span>.mtype);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> == o) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="keyword">null</span> || getClass() != o.getClass()) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        ctype ctype = (ctype) o;</span><br><span class="line">        <span class="keyword">return</span> Arrays.equals(mtype, ctype.mtype);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.hashCode(mtype);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>接下来实现Hibernate<code>UserType</code>接口：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Hibernate自定义类型</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">customType</span> <span class="keyword">implements</span> <span class="title">UserType</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>[] TYPES = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;Types.VARCHAR&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 修改类型对应的SQL类型（这里用VARCHAR</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] sqlTypes() &#123;</span><br><span class="line">        <span class="keyword">return</span> TYPES;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 修改customType对应的java类型（此处java类型为ctype</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Class <span class="title">returnedClass</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ctype.class;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自定义数据类型比对方法</span></span><br><span class="line"><span class="comment">     * 用作脏数据检查，o,o1为两个副本</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o, Object o1)</span> <span class="keyword">throws</span> HibernateException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Objects.equals(o, o1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回给定类型的hashCode</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">(Object o)</span> <span class="keyword">throws</span> HibernateException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Objects.hashCode(o);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 读取数据转换为自定义类型返回</span></span><br><span class="line"><span class="comment">     * strings包含了自定义类型的映射字段名称</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">nullSafeGet</span><span class="params">(ResultSet resultSet, String[] strings, </span></span></span><br><span class="line"><span class="function"><span class="params">                              SessionImplementor sessionImplementor, Object o)</span> </span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> HibernateException, SQLException </span>&#123;</span><br><span class="line">        String s = (String) resultSet.getObject(strings[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">if</span> (resultSet.wasNull()) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != s) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s.replaceAll(<span class="string">" "</span>, <span class="string">""</span>).isEmpty())</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ctype(s);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 数据保存时被调用</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">nullSafeSet</span><span class="params">(PreparedStatement preparedStatement, Object o, <span class="keyword">int</span> i, </span></span></span><br><span class="line"><span class="function"><span class="params">                            SessionImplementor sessionImplementor)</span> </span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> HibernateException, SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> == o) &#123;</span><br><span class="line">            preparedStatement.setNull(i, Types.VARCHAR);   <span class="comment">//保存空值</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            String stringValue = String.valueOf(o);</span><br><span class="line">            preparedStatement.setString(i, stringValue);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自定义类型的完全复制方法,构造返回对象</span></span><br><span class="line"><span class="comment">     * 1. 当nullSafeGet方法调用之后，我们获得了自定义数据对象，</span></span><br><span class="line"><span class="comment">     *	  在向用户返回自定义数据之前,deepCopy方法被调用，</span></span><br><span class="line"><span class="comment">     *    它将根据自定义数据对象构造一个完全拷贝，把拷贝返还给客户使用。</span></span><br><span class="line"><span class="comment">     * 2. 此时我们就得到了自定义数据对象的两个版本</span></span><br><span class="line"><span class="comment">     *    原始版本由hibernate维护，用作脏数据检查依据;</span></span><br><span class="line"><span class="comment">     *    复制版本由用户使用，hibernate将在脏数据检查过程中比较这两个版本的数据;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">deepCopy</span><span class="params">(Object o)</span> <span class="keyword">throws</span> HibernateException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        ctype c = (ctype) o;</span><br><span class="line">        ctype nc = <span class="keyword">new</span> ctype();</span><br><span class="line">        nc = c;</span><br><span class="line">        <span class="keyword">return</span> nc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 表示本类型实例是否可变</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMutable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * method called when Hibernate puts the data in a second level cache. The</span></span><br><span class="line"><span class="comment">     * data is stored in a serializable form （官方文档</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Serializable <span class="title">disassemble</span><span class="params">(Object o)</span> <span class="keyword">throws</span> HibernateException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (ctype) deepCopy(o);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns the object from the 2 level cache （官方文档</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">assemble</span><span class="params">(Serializable serializable, Object o)</span></span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> HibernateException</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> deepCopy(serializable);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">replace</span><span class="params">(Object o, Object o1, Object o2)</span> </span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> HibernateException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> deepCopy(o);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>通过注解方式使用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Entity -&gt; Item</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table</span>(name = <span class="string">"d_item"</span>)</span><br><span class="line"><span class="meta">@TypeDef</span>(name = <span class="string">"myType"</span>, typeClass = customType.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Item</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@Type</span>(type = <span class="string">"myType"</span>)</span><br><span class="line">    <span class="keyword">private</span> ctype uid;</span><br><span class="line">  </span><br><span class="line">   ... ...</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>完成。</p>
-
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2017/01/03/Hibernate自定义类型/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
@@ -1213,9 +1201,22 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-05-30 00:06:12" itemprop="dateModified" datetime="2019-05-30T00:06:12+08:00">2019-05-30</time>
+                <time title="修改时间：2019-08-19 20:51:43" itemprop="dateModified" datetime="2019-08-19T20:51:43+08:00">2019-08-19</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习/" itemprop="url" rel="index"><span itemprop="name">学习</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           

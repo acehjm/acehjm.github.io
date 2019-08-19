@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="majhdkl&#39;s blog">
 <meta property="og:description" content="Hibernate对一些基本类型的映射提供了很好的支持，但有时候我们需要映射自定义或更复杂的数据类型，比如一个List集合，可以通过基本类型映射实现，需要在数据库中新建一张表，这种方式增加了数据库开销；也可以将List集合中的数据拼接成字符串再存储，这种方式导致程序可读性不友好，同时增加代码的复杂度；Hibernate提供了DiscriminatorType和UserType接口，方便用户自定义需">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-29T16:42:44.637Z">
+<meta property="og:updated_time" content="2019-08-19T13:06:00.414Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hibernate自定义类型">
 <meta name="twitter:description" content="Hibernate对一些基本类型的映射提供了很好的支持，但有时候我们需要映射自定义或更复杂的数据类型，比如一个List集合，可以通过基本类型映射实现，需要在数据库中新建一张表，这种方式增加了数据库开销；也可以将List集合中的数据拼接成字符串再存储，这种方式导致程序可读性不友好，同时增加代码的复杂度；Hibernate提供了DiscriminatorType和UserType接口，方便用户自定义需">
@@ -305,9 +305,22 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-05-30 00:42:44" itemprop="dateModified" datetime="2019-05-30T00:42:44+08:00">2019-05-30</time>
+                <time title="修改时间：2019-08-19 21:06:00" itemprop="dateModified" datetime="2019-08-19T21:06:00+08:00">2019-08-19</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -344,6 +357,10 @@
 
       
         <p>Hibernate对一些基本类型的映射提供了很好的支持，但有时候我们需要映射自定义或更复杂的数据类型，比如一个List集合，可以通过基本类型映射实现，需要在数据库中新建一张表，这种方式增加了数据库开销；也可以将List集合中的数据拼接成字符串再存储，这种方式导致程序可读性不友好，同时增加代码的复杂度；Hibernate提供了DiscriminatorType和UserType接口，方便用户自定义需要映射的数据类型。这里以UserType为例实现。</p>
+<a id="more"></a>
+
+
+
 <p>假设用户需要自定义一个类型，名称为<code>ctype</code>，它是16位字符的<code>char</code>数组，需要映射到数据库<code>VARCHAR</code>类型。</p>
 <p>首先自定义java类型<code>ctype</code>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ctype</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// mtype 的长度</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> TYPE_LENGTH = <span class="number">16</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// mtype 实际上就是 char 数组</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">char</span>[] mtype = <span class="keyword">new</span> <span class="keyword">char</span>[TYPE_LENGTH];</span><br><span class="line"></span><br><span class="line">  	<span class="comment">// 默认构造函数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ctype</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mtype = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通过构造函数转换为ctype类型</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ctype</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">        String str = String.valueOf(object);</span><br><span class="line">        <span class="keyword">if</span> (StrUtil.isBlank(str))</span><br><span class="line">            <span class="keyword">this</span>.mtype = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">this</span>.mtype = str.toCharArray();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> String.valueOf(<span class="keyword">this</span>.mtype).replace(<span class="string">" "</span>, <span class="string">""</span>).length() &lt; TYPE_LENGTH;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> String.valueOf(<span class="keyword">this</span>.mtype);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> == o) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="keyword">null</span> || getClass() != o.getClass()) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        ctype ctype = (ctype) o;</span><br><span class="line">        <span class="keyword">return</span> Arrays.equals(mtype, ctype.mtype);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.hashCode(mtype);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

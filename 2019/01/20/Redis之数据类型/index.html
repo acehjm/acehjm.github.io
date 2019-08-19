@@ -63,7 +63,7 @@
 <meta property="og:description" content="Redis常用数据类型：  strings：二进制安全的字符串； lists：根据插入顺序排序的字符串元素的集合，基本上是链表； sets：唯一的，未排序的字符串元素的集合； zsets：有序集合，没个字符串元素都与一个浮点数关联，称为分数，元素总是按分数排序； hashs：散列或字典，是由与值相关联的字段组成的映射，字段和值都是字符串；">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://i.loli.net/2019/01/20/5c43fbac67729.png">
-<meta property="og:updated_time" content="2019-05-27T15:51:29.916Z">
+<meta property="og:updated_time" content="2019-08-19T13:06:41.939Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis数据类型">
 <meta name="twitter:description" content="Redis常用数据类型：  strings：二进制安全的字符串； lists：根据插入顺序排序的字符串元素的集合，基本上是链表； sets：唯一的，未排序的字符串元素的集合； zsets：有序集合，没个字符串元素都与一个浮点数关联，称为分数，元素总是按分数排序； hashs：散列或字典，是由与值相关联的字段组成的映射，字段和值都是字符串；">
@@ -307,9 +307,22 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-05-27 23:51:29" itemprop="dateModified" datetime="2019-05-27T23:51:29+08:00">2019-05-27</time>
+                <time title="修改时间：2019-08-19 21:06:41" itemprop="dateModified" datetime="2019-08-19T21:06:41+08:00">2019-08-19</time>
               </span>
             
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -362,7 +375,7 @@
 <ul>
 <li>避免使用很长的键：键的长度不超过1024位，过长的键对内存不友好，即使当前任务是匹配最大值，在数据库中查找键也需要几次昂贵的比较，对于一些过长的键，可以使用hash之后的结果作为键。</li>
 <li>避免使用过短的键：比如“u1000flw”和“user:1000:flowers”，虽然较短的键可以减小内存空间的使用，但是从可读性方面会差很多。</li>
-<li>尽量使用格式化键：像“object-type:id”这种格式，如“user:1000”，点或短划线通常用于多词字段，如“common​:12345:reply.to​”或“common:12345:reply-to”。</li>
+<li>尽量使用格式化键：像“object-type:id”这种格式，如“user:1000”，点或短划线通常用于多词字段，如“common:12345:reply.to​”或“common:12345:reply-to”。</li>
 <li>允许的<strong><em>键的最大大小为512M</em></strong>。</li>
 </ul>
 <h4 id="字符串（strings）"><a href="#字符串（strings）" class="headerlink" title="字符串（strings）"></a>字符串（strings）</h4><p>Redis中的字符串类型键值都是字符串，即将一个字符串映射到另外一个字符串。值的字符串类型可以是各种类型的字符串，如二进制数据、空字符串、jpeg图像等。<strong><em>字符串类型值的大小不能超过512M</em></strong>。</p>
