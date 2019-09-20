@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://acehjm.github.io/"/>
-  <updated>2019-08-28T14:40:35.970Z</updated>
+  <updated>2019-09-20T15:31:42.108Z</updated>
   <id>https://acehjm.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://acehjm.github.io/2019/08/28/i18n-error/"/>
     <id>https://acehjm.github.io/2019/08/28/i18n-error/</id>
     <published>2019-08-28T14:24:38.000Z</published>
-    <updated>2019-08-28T14:40:35.970Z</updated>
+    <updated>2019-09-20T15:31:42.108Z</updated>
     
     <content type="html"><![CDATA[<p>在SpringBoot多模块项目开发中，新增了国际化配置</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span> </span><br><span class="line">  <span class="comment"># 国际化文件路径配置</span></span><br><span class="line"><span class="attr">  messages:</span></span><br><span class="line"><span class="attr">    basename:</span> <span class="string">i18n/messages</span></span><br><span class="line"><span class="attr">    encoding:</span> <span class="string">UTF-8</span></span><br><span class="line"><span class="attr">    fallbackToSystemLocale:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure><p><code>Resource</code>目录下存在<code>i18n/messages</code>，文件中配置<code>key=value</code>。</p><h6 id="异常"><a href="#异常" class="headerlink" title="异常"></a><strong><em>异常</em></strong></h6><p>使用时遇到<code>org.springframework.context.NoSuchMessageException: No message found under code &#39;error.xxxx.message&#39; for locale &#39;zh_CN_#Hans&#39;</code>。</p><h6 id="排查"><a href="#排查" class="headerlink" title="排查"></a><strong><em>排查</em></strong></h6><ul><li>检查配置项是否正确；</li><li>检查<code>Resource</code>目录下文件是否存在；</li><li>检查文件中<code>key=value</code>是否存在；</li><li>检查编码文件编码是否为UTF_8；</li></ul><p>经过排查，发现以上问题均不存在，且断点进入<code>MessageSource</code>相关方法中发现<code>parentMessageSource</code>始终为空。</p><h6 id="解决"><a href="#解决" class="headerlink" title="解决"></a><strong><em>解决</em></strong></h6><p>后来，看了下<code>messages</code>的配置位置，是在被依赖模块的<code>application.yml</code>配置文件中，想到应该是项目启动后，使用过程中并未在启动项目的<code>Resource</code>目录下发现<code>i18n/messages</code>，而配置生效的路径则为被依赖模块的<code>Resource</code>目录下，因此，导致在被依赖模块目录下找不到<code>i18n/messages</code>而报错。</p><p>将配置转移到启动项目的配置文件中，再次测试国际化正常。</p>]]></content>
     
@@ -34,6 +34,8 @@
       
     
     </summary>
+    
+      <category term="问题" scheme="https://acehjm.github.io/categories/%E9%97%AE%E9%A2%98/"/>
     
     
       <category term="SpringBoot,I18N" scheme="https://acehjm.github.io/tags/SpringBoot-I18N/"/>
@@ -168,11 +170,11 @@
       <category term="技术" scheme="https://acehjm.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="kotlin" scheme="https://acehjm.github.io/tags/kotlin/"/>
-    
       <category term="技术" scheme="https://acehjm.github.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
       <category term="java" scheme="https://acehjm.github.io/tags/java/"/>
+    
+      <category term="kotlin" scheme="https://acehjm.github.io/tags/kotlin/"/>
     
   </entry>
   

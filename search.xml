@@ -4,6 +4,9 @@
     <title><![CDATA[SpringBoot多模块I18N配置无效，导致No message found under code 'xxx' for locale 'zh_CN_#Hans'问题]]></title>
     <url>%2F2019%2F08%2F28%2Fi18n-error%2F</url>
     <content type="text"><![CDATA[在SpringBoot多模块项目开发中，新增了国际化配置 123456spring: # 国际化文件路径配置 messages: basename: i18n/messages encoding: UTF-8 fallbackToSystemLocale: false Resource目录下存在i18n/messages，文件中配置key=value。 异常使用时遇到org.springframework.context.NoSuchMessageException: No message found under code &#39;error.xxxx.message&#39; for locale &#39;zh_CN_#Hans&#39;。 排查 检查配置项是否正确； 检查Resource目录下文件是否存在； 检查文件中key=value是否存在； 检查编码文件编码是否为UTF_8； 经过排查，发现以上问题均不存在，且断点进入MessageSource相关方法中发现parentMessageSource始终为空。 解决后来，看了下messages的配置位置，是在被依赖模块的application.yml配置文件中，想到应该是项目启动后，使用过程中并未在启动项目的Resource目录下发现i18n/messages，而配置生效的路径则为被依赖模块的Resource目录下，因此，导致在被依赖模块目录下找不到i18n/messages而报错。 将配置转移到启动项目的配置文件中，再次测试国际化正常。]]></content>
+      <categories>
+        <category>问题</category>
+      </categories>
       <tags>
         <tag>SpringBoot,I18N</tag>
       </tags>
@@ -64,9 +67,9 @@
         <category>技术</category>
       </categories>
       <tags>
-        <tag>kotlin</tag>
         <tag>技术</tag>
         <tag>java</tag>
+        <tag>kotlin</tag>
       </tags>
   </entry>
   <entry>
