@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://acehjm.github.io/"/>
-  <updated>2019-11-11T15:19:14.221Z</updated>
+  <updated>2019-11-11T15:21:47.406Z</updated>
   <id>https://acehjm.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://acehjm.github.io/2019/11/11/MacOS%E4%B8%8BSSH%E5%BF%AB%E9%80%9F%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE/"/>
     <id>https://acehjm.github.io/2019/11/11/MacOS下SSH快速远程连接配置/</id>
     <published>2019-11-11T14:53:26.000Z</published>
-    <updated>2019-11-11T15:19:14.221Z</updated>
+    <updated>2019-11-11T15:21:47.406Z</updated>
     
     <content type="html"><![CDATA[<p>在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如<code>ssh userName@serverIP</code>，该命令为连接到<code>serverIP</code>端口号为<code>22</code>的远程主机，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很麻烦。</p><p>通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过<code>ssh-copy-id</code>将本地公钥传输到SSH远程主机的<code>authorized_keys</code>文件中，目的是在SSH客户端登录的时候，通过该公钥来验证客户端。</p><p><code>ssh-copy-id</code>的基本语法为<code>ssh-copy-id [-i [identity_file]] [user@]machine [-p port]</code>，其中，<code>-i</code>为指定公钥文件，<code>-p</code>为指定端口。</p><p>示例：</p><p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub userName@serverIP -p port</code></p><p>如果用户权限不足，可以通过命令<code>chmod 700 ~/.ssh</code>和<code>chmod 600 ~/.ssh/authorized_keys</code>更改文件权限。</p><p>以上只是简化了密码的输入，还可以通过简化命令的方式实现快速进入，即通过配置命令别名的方式实现。在本地环境中，进入<code>～/.bash_profile</code>文件，追加别名命令<code>alais sshCommand=&quot;ssh userName@serverIP -p port&quot;</code>,如果<code>～/.bash_profile</code>文件不存在，则新建，配置完成后，通过命令<code>source ~/.bash_profile</code>使其生效。</p><p>最后，在终端中输入命令别名<code>sshCommand</code>即可连接到远程主机。</p>]]></content>
     
@@ -37,7 +37,9 @@
       <category term="Network" scheme="https://acehjm.github.io/categories/Network/"/>
     
     
-      <category term="SSH,Network" scheme="https://acehjm.github.io/tags/SSH-Network/"/>
+      <category term="SSH" scheme="https://acehjm.github.io/tags/SSH/"/>
+    
+      <category term="Network" scheme="https://acehjm.github.io/tags/Network/"/>
     
   </entry>
   
@@ -99,7 +101,7 @@
     <link href="https://acehjm.github.io/2019/08/28/i18n-error/"/>
     <id>https://acehjm.github.io/2019/08/28/i18n-error/</id>
     <published>2019-08-28T14:24:38.000Z</published>
-    <updated>2019-09-20T15:31:42.108Z</updated>
+    <updated>2019-11-11T15:21:55.966Z</updated>
     
     <content type="html"><![CDATA[<p>在SpringBoot多模块项目开发中，新增了国际化配置</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span> </span><br><span class="line">  <span class="comment"># 国际化文件路径配置</span></span><br><span class="line"><span class="attr">  messages:</span></span><br><span class="line"><span class="attr">    basename:</span> <span class="string">i18n/messages</span></span><br><span class="line"><span class="attr">    encoding:</span> <span class="string">UTF-8</span></span><br><span class="line"><span class="attr">    fallbackToSystemLocale:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure><p><code>Resource</code>目录下存在<code>i18n/messages</code>，文件中配置<code>key=value</code>。</p><h6 id="异常"><a href="#异常" class="headerlink" title="异常"></a><strong><em>异常</em></strong></h6><p>使用时遇到<code>org.springframework.context.NoSuchMessageException: No message found under code &#39;error.xxxx.message&#39; for locale &#39;zh_CN_#Hans&#39;</code>。</p><h6 id="排查"><a href="#排查" class="headerlink" title="排查"></a><strong><em>排查</em></strong></h6><ul><li>检查配置项是否正确；</li><li>检查<code>Resource</code>目录下文件是否存在；</li><li>检查文件中<code>key=value</code>是否存在；</li><li>检查编码文件编码是否为UTF_8；</li></ul><p>经过排查，发现以上问题均不存在，且断点进入<code>MessageSource</code>相关方法中发现<code>parentMessageSource</code>始终为空。</p><h6 id="解决"><a href="#解决" class="headerlink" title="解决"></a><strong><em>解决</em></strong></h6><p>后来，看了下<code>messages</code>的配置位置，是在被依赖模块的<code>application.yml</code>配置文件中，想到应该是项目启动后，使用过程中并未在启动项目的<code>Resource</code>目录下发现<code>i18n/messages</code>，而配置生效的路径则为被依赖模块的<code>Resource</code>目录下，因此，导致在被依赖模块目录下找不到<code>i18n/messages</code>而报错。</p><p>将配置转移到启动项目的配置文件中，再次测试国际化正常。</p>]]></content>
     
@@ -116,7 +118,9 @@
       <category term="问题" scheme="https://acehjm.github.io/categories/%E9%97%AE%E9%A2%98/"/>
     
     
-      <category term="SpringBoot,I18N" scheme="https://acehjm.github.io/tags/SpringBoot-I18N/"/>
+      <category term="SpringBoot" scheme="https://acehjm.github.io/tags/SpringBoot/"/>
+    
+      <category term="I18N" scheme="https://acehjm.github.io/tags/I18N/"/>
     
   </entry>
   
