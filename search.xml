@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[SSH快速远程连接配置]]></title>
     <url>%2F2019%2F11%2F11%2FMacOS%E4%B8%8BSSH%E5%BF%AB%E9%80%9F%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE%2F</url>
-    <content type="text"><![CDATA[在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如ssh userName@serverIP，该命令为连接到端口号为22的远程服务器，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很痛苦。 通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过ssh-copy-id将本地公钥传输到SSH远程主机的authorized_keys文件中，目的是在SSH客户端登录的时候，通过该公钥来验证客户端。 ssh-copy-id的基本语法为ssh-copy-id [-i [identity_file]] [user@]machine [-p port]，其中，-i为知道公钥文件，-p为指定端口。 示例： ssh-copy-id -i ~/.ssh/id_rsa.pub userName@serverIP -p port 如果用户权限不足，可以通过命令chmod 700 ~/.ssh和chmod 600 ~/.ssh/authorized_keys更改文件权限。 以上只是简化了密码的输入，还可以通过简化命令的方式实现快速进入，即通过配置命令别名的方式实现。在本地环境中，进入～/.bash_profile文件，追加别名命令alais sshCommand=&quot;ssh userName@serverIP -p port&quot;,如果～/.bash_profile文件不存在，则新建，配置完成后，通过命令source ~/.bash_profile使其生效。 最后，在终端中输入命令别名sshCommand即可连接到远程主机。]]></content>
+    <content type="text"><![CDATA[在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如ssh userName@serverIP，该命令为连接到serverIP端口号为22的远程主机，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很麻烦。 通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过ssh-copy-id将本地公钥传输到SSH远程主机的authorized_keys文件中，目的是在SSH客户端登录的时候，通过该公钥来验证客户端。 ssh-copy-id的基本语法为ssh-copy-id [-i [identity_file]] [user@]machine [-p port]，其中，-i为指定公钥文件，-p为指定端口。 示例： ssh-copy-id -i ~/.ssh/id_rsa.pub userName@serverIP -p port 如果用户权限不足，可以通过命令chmod 700 ~/.ssh和chmod 600 ~/.ssh/authorized_keys更改文件权限。 以上只是简化了密码的输入，还可以通过简化命令的方式实现快速进入，即通过配置命令别名的方式实现。在本地环境中，进入～/.bash_profile文件，追加别名命令alais sshCommand=&quot;ssh userName@serverIP -p port&quot;,如果～/.bash_profile文件不存在，则新建，配置完成后，通过命令source ~/.bash_profile使其生效。 最后，在终端中输入命令别名sshCommand即可连接到远程主机。]]></content>
       <categories>
         <category>Network</category>
       </categories>

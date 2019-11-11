@@ -54,18 +54,18 @@
   };
 </script>
 
-  <meta name="description" content="在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如ssh userName@serverIP，该命令为连接到端口号为22的远程服务器，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很痛苦。 通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过ssh-copy-id将本地公钥传输到SSH远程主机的authorized_key">
+  <meta name="description" content="在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如ssh userName@serverIP，该命令为连接到serverIP端口号为22的远程主机，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很麻烦。 通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过ssh-copy-id将本地公钥传输到SSH远程主机的authori">
 <meta name="keywords" content="SSH,Network">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SSH快速远程连接配置">
 <meta property="og:url" content="https://acehjm.github.io/2019/11/11/MacOS下SSH快速远程连接配置/index.html">
 <meta property="og:site_name" content="majhdkl&#39;s blog">
-<meta property="og:description" content="在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如ssh userName@serverIP，该命令为连接到端口号为22的远程服务器，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很痛苦。 通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过ssh-copy-id将本地公钥传输到SSH远程主机的authorized_key">
+<meta property="og:description" content="在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如ssh userName@serverIP，该命令为连接到serverIP端口号为22的远程主机，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很麻烦。 通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过ssh-copy-id将本地公钥传输到SSH远程主机的authori">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-11T15:16:44.271Z">
+<meta property="og:updated_time" content="2019-11-11T15:19:14.221Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSH快速远程连接配置">
-<meta name="twitter:description" content="在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如ssh userName@serverIP，该命令为连接到端口号为22的远程服务器，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很痛苦。 通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过ssh-copy-id将本地公钥传输到SSH远程主机的authorized_key">
+<meta name="twitter:description" content="在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如ssh userName@serverIP，该命令为连接到serverIP端口号为22的远程主机，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很麻烦。 通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过ssh-copy-id将本地公钥传输到SSH远程主机的authori">
   <link rel="alternate" href="/atom.xml" title="majhdkl's blog" type="application/atom+xml">
   <link rel="canonical" href="https://acehjm.github.io/2019/11/11/MacOS下SSH快速远程连接配置/">
 
@@ -295,7 +295,7 @@
                 
               
 
-              <time title="创建时间：2019-11-11 22:53:26 / 修改时间：23:16:44" itemprop="dateCreated datePublished" datetime="2019-11-11T22:53:26+08:00">2019-11-11</time>
+              <time title="创建时间：2019-11-11 22:53:26 / 修改时间：23:19:14" itemprop="dateCreated datePublished" datetime="2019-11-11T22:53:26+08:00">2019-11-11</time>
             </span>
           
             
@@ -349,9 +349,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如<code>ssh userName@serverIP</code>，该命令为连接到端口号为<code>22</code>的远程服务器，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很痛苦。</p>
+        <p>在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如<code>ssh userName@serverIP</code>，该命令为连接到<code>serverIP</code>端口号为<code>22</code>的远程主机，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很麻烦。</p>
 <p>通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过<code>ssh-copy-id</code>将本地公钥传输到SSH远程主机的<code>authorized_keys</code>文件中，目的是在SSH客户端登录的时候，通过该公钥来验证客户端。</p>
-<p><code>ssh-copy-id</code>的基本语法为<code>ssh-copy-id [-i [identity_file]] [user@]machine [-p port]</code>，其中，<code>-i</code>为知道公钥文件，<code>-p</code>为指定端口。</p>
+<p><code>ssh-copy-id</code>的基本语法为<code>ssh-copy-id [-i [identity_file]] [user@]machine [-p port]</code>，其中，<code>-i</code>为指定公钥文件，<code>-p</code>为指定端口。</p>
 <p>示例：</p>
 <p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub userName@serverIP -p port</code></p>
 <p>如果用户权限不足，可以通过命令<code>chmod 700 ~/.ssh</code>和<code>chmod 600 ~/.ssh/authorized_keys</code>更改文件权限。</p>
