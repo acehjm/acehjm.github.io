@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://acehjm.github.io/"/>
-  <updated>2019-11-11T15:21:47.406Z</updated>
+  <updated>2019-11-30T16:43:24.152Z</updated>
   <id>https://acehjm.github.io/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://acehjm.github.io/2019/11/11/MacOS%E4%B8%8BSSH%E5%BF%AB%E9%80%9F%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE/"/>
     <id>https://acehjm.github.io/2019/11/11/MacOS下SSH快速远程连接配置/</id>
     <published>2019-11-11T14:53:26.000Z</published>
-    <updated>2019-11-11T15:21:47.406Z</updated>
+    <updated>2019-11-30T16:43:24.152Z</updated>
     
-    <content type="html"><![CDATA[<p>在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如<code>ssh userName@serverIP</code>，该命令为连接到<code>serverIP</code>端口号为<code>22</code>的远程主机，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很麻烦。</p><p>通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过<code>ssh-copy-id</code>将本地公钥传输到SSH远程主机的<code>authorized_keys</code>文件中，目的是在SSH客户端登录的时候，通过该公钥来验证客户端。</p><p><code>ssh-copy-id</code>的基本语法为<code>ssh-copy-id [-i [identity_file]] [user@]machine [-p port]</code>，其中，<code>-i</code>为指定公钥文件，<code>-p</code>为指定端口。</p><p>示例：</p><p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub userName@serverIP -p port</code></p><p>如果用户权限不足，可以通过命令<code>chmod 700 ~/.ssh</code>和<code>chmod 600 ~/.ssh/authorized_keys</code>更改文件权限。</p><p>以上只是简化了密码的输入，还可以通过简化命令的方式实现快速进入，即通过配置命令别名的方式实现。在本地环境中，进入<code>～/.bash_profile</code>文件，追加别名命令<code>alais sshCommand=&quot;ssh userName@serverIP -p port&quot;</code>,如果<code>～/.bash_profile</code>文件不存在，则新建，配置完成后，通过命令<code>source ~/.bash_profile</code>使其生效。</p><p>最后，在终端中输入命令别名<code>sshCommand</code>即可连接到远程主机。</p>]]></content>
+    <content type="html"><![CDATA[<p>在连接SSH时候，往往要输入一串的命令，包括用户名密码及端口，比如<code>ssh userName@serverIP</code>，该命令为连接到<code>serverIP</code>端口号为<code>22</code>的远程主机，连接时需要输入密码进行认证。这种方式命令较长较难记，如果密码也很难记，那每次SSH都很麻烦。</p><p>通过密钥认证方式可以在避免输入密码的情况下连接到SSH远程主机，该方式通过<code>ssh-copy-id</code>将本地公钥传输到SSH远程主机的<code>authorized_keys</code>文件中，目的是在SSH客户端登录的时候，通过该公钥来验证客户端。</p><p><code>ssh-copy-id</code>的基本语法为<code>ssh-copy-id [-i [identity_file]] [user@]machine [-p port]</code>，其中，<code>-i</code>为指定公钥文件，<code>-p</code>为指定端口。</p><p>示例：</p><p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub userName@serverIP -p port</code></p><p>如果用户权限不足，可以通过命令<code>chmod 700 ~/.ssh</code>和<code>chmod 600 ~/.ssh/authorized_keys</code>更改文件权限。</p><p>以上只是简化了密码的输入，还可以通过简化命令的方式实现快速进入，即通过配置命令别名的方式实现。在本地环境中，进入<code>～/.bash_profile</code>文件，追加别名命令<code>alais sshCommand=&quot;ssh userName@serverIP -p port&quot;</code>,如果<code>～/.bash_profile</code>文件不存在，则新建，配置完成后，通过命令<code>source ~/.bash_profile</code>使其生效。</p><p>如果Mac中使用<code>iterm</code>，可能快捷命令并不会生效，需要编辑<code>.zshrc</code>文件，添加以下内容即可避免每次进入都需要使用<code>source</code>命令编译。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if [ -f ~/.bash_profile ]; then</span><br><span class="line">  . ~/.bash_profile</span><br><span class="line">fi</span><br></pre></td></tr></table></figure><p>最后，在终端中输入命令别名<code>sshCommand</code>即可连接到远程主机。</p>]]></content>
     
     <summary type="html">
     
@@ -252,11 +252,11 @@
       <category term="技术" scheme="https://acehjm.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
+      <category term="kotlin" scheme="https://acehjm.github.io/tags/kotlin/"/>
+    
       <category term="技术" scheme="https://acehjm.github.io/tags/%E6%8A%80%E6%9C%AF/"/>
     
       <category term="java" scheme="https://acehjm.github.io/tags/java/"/>
-    
-      <category term="kotlin" scheme="https://acehjm.github.io/tags/kotlin/"/>
     
   </entry>
   

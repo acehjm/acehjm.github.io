@@ -294,11 +294,19 @@
                 
               
 
-              <time title="创建时间：2019-11-11 22:53:26 / 修改时间：23:21:47" itemprop="dateCreated datePublished" datetime="2019-11-11T22:53:26+08:00">2019-11-11</time>
+              <time title="创建时间：2019-11-11 22:53:26" itemprop="dateCreated datePublished" datetime="2019-11-11T22:53:26+08:00">2019-11-11</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-01 00:43:24" itemprop="dateModified" datetime="2019-12-01T00:43:24+08:00">2019-12-01</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -355,6 +363,9 @@
 <p><code>ssh-copy-id -i ~/.ssh/id_rsa.pub userName@serverIP -p port</code></p>
 <p>如果用户权限不足，可以通过命令<code>chmod 700 ~/.ssh</code>和<code>chmod 600 ~/.ssh/authorized_keys</code>更改文件权限。</p>
 <p>以上只是简化了密码的输入，还可以通过简化命令的方式实现快速进入，即通过配置命令别名的方式实现。在本地环境中，进入<code>～/.bash_profile</code>文件，追加别名命令<code>alais sshCommand=&quot;ssh userName@serverIP -p port&quot;</code>,如果<code>～/.bash_profile</code>文件不存在，则新建，配置完成后，通过命令<code>source ~/.bash_profile</code>使其生效。</p>
+<p>如果Mac中使用<code>iterm</code>，可能快捷命令并不会生效，需要编辑<code>.zshrc</code>文件，添加以下内容即可避免每次进入都需要使用<code>source</code>命令编译。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if [ -f ~/.bash_profile ]; then</span><br><span class="line">  . ~/.bash_profile</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
 <p>最后，在终端中输入命令别名<code>sshCommand</code>即可连接到远程主机。</p>
 
         
