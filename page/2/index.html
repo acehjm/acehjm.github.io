@@ -57,15 +57,15 @@
   <meta name="description" content="Programming technology">
 <meta name="keywords" content="Programming,technology">
 <meta property="og:type" content="website">
-<meta property="og:title" content="majhdkl&#39;s blog">
+<meta property="og:title" content="gofor&#39;s blog">
 <meta property="og:url" content="https://acehjm.github.io/page/2/index.html">
-<meta property="og:site_name" content="majhdkl&#39;s blog">
+<meta property="og:site_name" content="gofor&#39;s blog">
 <meta property="og:description" content="Programming technology">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="majhdkl&#39;s blog">
+<meta name="twitter:title" content="gofor&#39;s blog">
 <meta name="twitter:description" content="Programming technology">
-  <link rel="alternate" href="/atom.xml" title="majhdkl's blog" type="application/atom+xml">
+  <link rel="alternate" href="/atom.xml" title="gofor's blog" type="application/atom+xml">
   <link rel="canonical" href="https://acehjm.github.io/page/2/">
 
 
@@ -80,7 +80,7 @@
   };
 </script>
 
-  <title>majhdkl's blog</title>
+  <title>gofor's blog</title>
   <meta name="generator" content="Hexo 3.9.0">
   
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-72749534-1"></script>
@@ -140,7 +140,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">majhdkl's blog</span>
+        <span class="site-title">gofor's blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -265,16 +265,143 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://acehjm.github.io/2017/01/03/Hibernate自定义类型/">
+    <link itemprop="mainEntityOfPage" href="https://acehjm.github.io/2017/04/12/Kotlin-Spring-boot-使用-Valid校验无效解决方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="majhdkl">
+      <meta itemprop="name" content="gofor">
       <meta itemprop="description" content="Programming technology">
       <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="majhdkl's blog">
+      <meta itemprop="name" content="gofor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2017/04/12/Kotlin-Spring-boot-使用-Valid校验无效解决方法/" class="post-title-link" itemprop="url">Kotlin & Spring boot 使用@Valid校验无效解决方法</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2017-04-12 17:32:12" itemprop="dateCreated datePublished" datetime="2017-04-12T17:32:12+08:00">2017-04-12</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-08-19 21:00:09" itemprop="dateModified" datetime="2019-08-19T21:00:09+08:00">2019-08-19</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span id="/2017/04/12/Kotlin-Spring-boot-使用-Valid校验无效解决方法/" class="post-meta-item leancloud_visitors" data-flag-title="Kotlin & Spring boot 使用@Valid校验无效解决方法" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/04/12/Kotlin-Spring-boot-使用-Valid校验无效解决方法/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2017/04/12/Kotlin-Spring-boot-使用-Valid校验无效解决方法/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>kotlin data （对应Java实体类</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name = <span class="meta-string">"user"</span>)</span></span><br><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span>(</span><br><span class="line">        <span class="meta">@NotNull(message = <span class="meta-string">"用户名不能为空"</span>)</span></span><br><span class="line">        <span class="meta">@Column(name = <span class="meta-string">"user_name"</span>, nullable = false)</span></span><br><span class="line">        <span class="keyword">var</span> userName: String = <span class="string">""</span>,</span><br><span class="line"></span><br><span class="line">        <span class="meta">@NotNull(message = <span class="meta-string">"用户ID不能为空"</span>)</span></span><br><span class="line">        <span class="meta">@Column(name = <span class="meta-string">"user_id"</span>, unique = true)</span></span><br><span class="line">        <span class="keyword">var</span> userId: String = <span class="string">""</span>,</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Email(message = <span class="meta-string">"无效的邮箱"</span>)</span></span><br><span class="line">        <span class="keyword">var</span> email: String = <span class="string">""</span>,</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Column(nullable = false)</span></span><br><span class="line">        <span class="keyword">var</span> password: String = <span class="string">""</span></span><br><span class="line"></span><br><span class="line">) : Serializable</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2017/04/12/Kotlin-Spring-boot-使用-Valid校验无效解决方法/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://acehjm.github.io/2017/01/03/Hibernate自定义类型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="gofor">
+      <meta itemprop="description" content="Programming technology">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gofor's blog">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -394,13 +521,13 @@
     <link itemprop="mainEntityOfPage" href="https://acehjm.github.io/2016/01/29/读看见/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="majhdkl">
+      <meta itemprop="name" content="gofor">
       <meta itemprop="description" content="Programming technology">
       <meta itemprop="image" content="/images/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="majhdkl's blog">
+      <meta itemprop="name" content="gofor's blog">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -541,8 +668,8 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image"
       src="/images/avatar.png"
-      alt="majhdkl">
-  <p class="site-author-name" itemprop="name">majhdkl</p>
+      alt="gofor">
+  <p class="site-author-name" itemprop="name">gofor</p>
   <div class="site-description motion-element" itemprop="description">Programming technology</div>
 </div>
   <nav class="site-state motion-element">
@@ -550,7 +677,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -622,7 +749,9 @@
         
           
         
-        <span class="site-state-item-count">17</span>
+          
+        
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -683,7 +812,7 @@
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">majhdkl</span>
+  <span class="author" itemprop="copyrightHolder">gofor</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
   <span class="post-meta-divider">|</span>
