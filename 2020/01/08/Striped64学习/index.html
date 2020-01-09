@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="gofor&#39;s blog">
 <meta property="og:description" content="Striped64 学习很长一段时间，不知道Striped64这个类的存在，当然，还是由于对并发包不了解的缘故。在大概了解了一下之后，才知道，原来这是一个并发计数组件，这个类很有意思，在这里学习总结一下。 简单介绍Striped64是在java8中新增的用于支持累加器的并发组件（和LongAdder、DoubleAdder一起增加的一个抽象内部类），它支持在并发环境下计数，其设计思想是避免线程激烈">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-08T15:12:41.161Z">
+<meta property="og:updated_time" content="2020-01-09T16:38:35.975Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Striped64 学习">
 <meta name="twitter:description" content="Striped64 学习很长一段时间，不知道Striped64这个类的存在，当然，还是由于对并发包不了解的缘故。在大概了解了一下之后，才知道，原来这是一个并发计数组件，这个类很有意思，在这里学习总结一下。 简单介绍Striped64是在java8中新增的用于支持累加器的并发组件（和LongAdder、DoubleAdder一起增加的一个抽象内部类），它支持在并发环境下计数，其设计思想是避免线程激烈">
@@ -295,11 +295,19 @@
                 
               
 
-              <time title="创建时间：2020-01-08 22:52:45 / 修改时间：23:12:41" itemprop="dateCreated datePublished" datetime="2020-01-08T22:52:45+08:00">2020-01-08</time>
+              <time title="创建时间：2020-01-08 22:52:45" itemprop="dateCreated datePublished" datetime="2020-01-08T22:52:45+08:00">2020-01-08</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-10 00:38:35" itemprop="dateModified" datetime="2020-01-10T00:38:35+08:00">2020-01-10</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -350,7 +358,10 @@
 
       
         <h1 id="Striped64-学习"><a href="#Striped64-学习" class="headerlink" title="Striped64 学习"></a>Striped64 学习</h1><p>很长一段时间，不知道Striped64这个类的存在，当然，还是由于对并发包不了解的缘故。在大概了解了一下之后，才知道，原来这是一个并发计数组件，这个类很有意思，在这里学习总结一下。</p>
-<h4 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h4><p>Striped64是在java8中新增的用于支持累加器的并发组件（和LongAdder、DoubleAdder一起增加的一个抽象内部类），它支持在并发环境下计数，其设计思想是避免线程激烈竞争时引起的开销和异常，通过分散竞争的方式（允许不超过CPU核心数个线程同时执行）实现最大效率。<br>在Striped64内部维护了3个重要操作变量，分别是：cells（Cell类型的数组）、base（基础计数器）、cellsBusy（Cell数组状态值）。Cell对象内部维护了一个计数值value，用来记录线程局部计数值。<br>计数核心过程为：</p>
+<h4 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h4><p>Striped64是在java8中新增的用于支持累加器的并发组件（和LongAdder、DoubleAdder一起增加的一个抽象内部类），它支持在并发环境下计数，其设计思想是避免线程激烈竞争时引起的开销和异常，通过分散竞争的方式（允许不超过CPU核心数个线程同时执行）实现最大效率。<br>在Striped64内部维护了3个重要操作变量，分别是：cells（Cell类型的数组）、base（基础计数器）、cellsBusy（Cell数组状态值）。Cell对象内部维护了一个计数值value，用来记录线程局部计数值。<br></p>
+<a id="more"></a>
+
+<p>计数核心过程为：</p>
 <ul>
 <li>根据当前线程来计算一个哈希值，根据算法(hashCode &amp; (length - 1))取模定位到该线程被分散到的Cell数组中的位置；</li>
 <li>如果Cell数组还没有被创建，那么就去获取cellBusy这个状态值，如果获取成功，则初始化Cell数组，初始容量为2，初始化完成之后将x（计数增值）包装到一个Cell，哈希计算之后分散到相应的index上。如果获取cellBusy失败，那么会试图将x（计数增值）累计到base上，更新失败会重试（自旋）直到成功。</li>
@@ -543,15 +554,7 @@
         
           
         
-          
-        
-          
-        
-          
-        
-          
-        
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
